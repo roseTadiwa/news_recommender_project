@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Recommender System</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color:#ced4da;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, red, maroon);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, green, maroon);
+            border-radius: 2px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+        }
+
+        .recommender-form {
+    background: linear-gradient(135deg, #4cc9f0, #4361ee, #3f37c9, #7209b7);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+}
+
+/* Animation for moving gradient */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-actions-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    align-items: flex-end;
+}
+
+
+        .form-actions-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        select {
+            background-color: var(--light-color);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        button {
+    background: linear-gradient(to right, green, yellow);
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: var(--border-radius);
+}
+
+button:hover {
+    background: linear-gradient(to right, var(--success-color), var(--accent-color));
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+
+.recommendations-container {
+    background: linear-gradient(135deg, #ffe5ec, #ffc2d1, #b8c0ff, #c8b6ff);
+    background-size: 400% 400%;
+    animation: recGradientAnimation 18s ease infinite;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Animation for recommendations background */
+@keyframes recGradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+        .no-recommendations {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        .recommendations-list {
+            list-style: none;
+        }
+
+        .recommendations-list li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .recommendations-list li:hover {
+            transform: translateX(5px);
+            background-color: #e9ecef;
+        }
+
+        .recommendations-list a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .recommendations-list a::before {
+            content: '→';
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .recommendations-list a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (min-width: 768px) {
+            .form-actions-row {
+                margin-top: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .recommendations-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>News Article Recommender</h1>
+
+        <div class="recommender-form">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-row">
+                    <!-- First row - Article selection only -->
+                    <div class="form-group">
+                        <label for="article">Select an Article</label>
+                        <select name="article_id" id="article">
+                            {% for article in articles %}
+                                <option value="{{ article.id }}" {% if article.id == selected_article_id %}selected{% endif %}>
+                                    {{ article.title|truncatewords:10 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Second row - Sort and Submit -->
+                    <div class="form-actions-row">
+                        <div class="form-group">
+                            <label for="sort_by">Sort By</label>
+                            <select name="sort_by" id="sort_by">
+                                <option value="relevance">Relevance</option>
+                                <option value="date">Date</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit">Get Recommendations</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if recommendations %}
+        <div class="recommendations-container">
+            <h2>Recommended Articles</h2>
+            <ul class="recommendations-list">
+                {% for rec in recommendations %}
+                    <li><a href="{{ rec.link }}" target="_blank">{{ rec.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="no-recommendations">
+            <p>Select an article and click "Get Recommendations" to see personalized suggestions</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
